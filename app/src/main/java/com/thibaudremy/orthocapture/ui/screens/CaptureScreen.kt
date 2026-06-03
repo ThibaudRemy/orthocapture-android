@@ -146,11 +146,12 @@ private fun CameraPreview(
     }
 
     DisposableEffect(lifecycleOwner, previewView) {
+        var cameraProvider: ProcessCameraProvider? = null
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         val executor = ContextCompat.getMainExecutor(context)
         val listener = Runnable {
             try {
-                val cameraProvider = cameraProviderFuture.get()
+                cameraProvider = cameraProviderFuture.get()
                 val preview = Preview.Builder().build().also { preview ->
                     preview.setSurfaceProvider(previewView.surfaceProvider)
                 }
@@ -158,8 +159,8 @@ private fun CameraPreview(
                     .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                     .build()
 
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
+                cameraProvider?.unbindAll()
+                cameraProvider?.bindToLifecycle(
                     lifecycleOwner,
                     CameraSelector.DEFAULT_BACK_CAMERA,
                     preview,
@@ -174,7 +175,7 @@ private fun CameraPreview(
         cameraProviderFuture.addListener(listener, executor)
 
         onDispose {
-            runCatching { cameraProviderFuture.get().unbindAll() }
+            cameraProvider?.unbindAll()
         }
     }
 
