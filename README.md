@@ -33,6 +33,22 @@ Ce lot met en place un squelette Android natif compilable en Kotlin avec Jetpack
 
 Hors périmètre de ce lot : CameraX, traitement photogrammétrique, upload serveur et base de données.
 
+## Lot 02
+
+Ce lot ajoute un modèle de données local simple pour préparer le stockage projet, sans introduire de base de données ni de dépendance lourde.
+
+Éléments ajoutés :
+
+- `domain/model/Project.kt` : représentation d’un projet terrain avec identifiant, nom, description, type de capture, qualité, date de création, appareil cible, nombre de photos et statut.
+- `domain/model/PhotoItem.kt` : représentation minimale d’une future photo avec métadonnées temporelles, coordonnées optionnelles et indicateur de qualité.
+- `domain/model/CaptureType.kt`, `CaptureQuality.kt`, `ProjectStatus.kt` : énumérations lisibles pour qualifier les projets.
+- `data/ProjectRepository.kt` : repository en mémoire contenant des projets fictifs centralisés.
+- `ProjectListScreen` consomme désormais des objets `Project` plutôt qu’une liste de chaînes.
+- `ProjectDetailScreen` affiche les informations principales du projet sélectionné.
+- La navigation transmet un `projectId` simple vers l’écran détail ; en cas d’identifiant absent ou inconnu, le repository fournit un projet fictif par défaut.
+
+Hors périmètre de ce lot : Room, DataStore, CameraX, écriture réelle de `projects.json`, upload serveur et traitement photogrammétrique.
+
 ## Structure du projet
 
 ```text
@@ -40,6 +56,8 @@ Hors périmètre de ce lot : CameraX, traitement photogrammétrique, upload serv
 ├── app/                         # Module Android applicatif
 │   └── src/main/java/com/thibaudremy/orthocapture/
 │       ├── MainActivity.kt
+│       ├── data/                # Repository local en mémoire
+│       ├── domain/model/        # Modèles Project, PhotoItem et enums métier
 │       ├── navigation/          # Destinations et NavHost Compose
 │       └── ui/                  # Thème et écrans Compose
 ├── docs/                        # Documentation produit existante
