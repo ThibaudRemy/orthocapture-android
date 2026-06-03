@@ -1,6 +1,10 @@
 package com.thibaudremy.orthocapture.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,6 +13,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+private val CaptureTypes = listOf("sol", "façade", "toiture", "intérieur", "autre")
+private val QualityLevels = listOf("rapide", "standard", "haute qualité")
 
 @Composable
 fun CreateProjectScreen(
@@ -16,7 +24,9 @@ fun CreateProjectScreen(
     onProjectCreated: () -> Unit,
 ) {
     var projectName by remember { mutableStateOf("") }
-    var projectNotes by remember { mutableStateOf("") }
+    var projectDescription by remember { mutableStateOf("") }
+    var selectedCaptureType by remember { mutableStateOf(CaptureTypes.first()) }
+    var selectedQuality by remember { mutableStateOf("standard") }
 
     OrthoCaptureScreenScaffold(title = "Nouveau projet", onBack = onBack) { paddingValues ->
         ScreenBody(paddingValues) {
@@ -32,16 +42,34 @@ fun CreateProjectScreen(
                 singleLine = true,
             )
             OutlinedTextField(
-                value = projectNotes,
-                onValueChange = { projectNotes = it },
+                value = projectDescription,
+                onValueChange = { projectDescription = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Notes terrain") },
+                label = { Text("Description") },
                 minLines = 4,
             )
-            PrimaryNavigationButton(
-                text = "Continuer vers le projet",
-                onClick = onProjectCreated,
+            OptionGroup(
+                title = "Type de capture",
+                options = CaptureTypes,
+                selectedOption = selectedCaptureType,
+                onOptionSelected = { selectedCaptureType = it },
             )
+            OptionGroup(
+                title = "Qualité",
+                options = QualityLevels,
+                selectedOption = selectedQuality,
+                onOptionSelected = { selectedQuality = it },
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                OutlinedButton(onClick = onBack) {
+                    Text("Annuler")
+                }
+                Button(onClick = onProjectCreated) {
+                    Text("Créer projet")
+                }
+            }
         }
     }
 }

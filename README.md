@@ -23,13 +23,13 @@ Ce lot met en place un squelette Android natif compilable en Kotlin avec Jetpack
 
 Écrans disponibles :
 
-- `ProjectListScreen` : liste d’entrée des projets et accès aux réglages.
-- `CreateProjectScreen` : formulaire placeholder de création de projet.
+- `ProjectListScreen` : liste d’entrée avec projets fictifs et accès aux réglages.
+- `CreateProjectScreen` : formulaire placeholder avec nom, description, type de capture, qualité et actions créer/annuler.
 - `ProjectDetailScreen` : point d’entrée vers les actions du projet.
 - `CaptureScreen` : placeholder, sans CameraX pour ce lot.
 - `GalleryScreen` : placeholder de galerie projet.
 - `ExportScreen` : placeholder d’export.
-- `SettingsScreen` : placeholder des réglages.
+- `SettingsScreen` : rappel des paramètres cible du lot 01 (Galaxy S24, SM-S921B/DS, mode documentaire, stockage local activé).
 
 Hors périmètre de ce lot : CameraX, traitement photogrammétrique, upload serveur et base de données.
 

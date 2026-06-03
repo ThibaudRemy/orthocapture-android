@@ -1,6 +1,14 @@
 package com.thibaudremy.orthocapture.ui.screens
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+
+private val FakeProjects = listOf(
+    "Façade nord - atelier municipal",
+    "Relevé sol - cour intérieure",
+    "Toiture annexe - diagnostic visuel",
+)
 
 @Composable
 fun ProjectListScreen(
@@ -18,10 +26,13 @@ fun ProjectListScreen(
                 text = "Créer un projet",
                 onClick = onCreateProject,
             )
-            SecondaryNavigationButton(
-                text = "Ouvrir le projet de démonstration",
-                onClick = onOpenProject,
-            )
+            Text("Projets récents", style = MaterialTheme.typography.titleMedium)
+            FakeProjects.forEach { projectName ->
+                SecondaryNavigationButton(
+                    text = projectName,
+                    onClick = onOpenProject,
+                )
+            }
             SecondaryNavigationButton(
                 text = "Réglages",
                 onClick = onOpenSettings,

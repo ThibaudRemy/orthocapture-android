@@ -3,6 +3,7 @@ package com.thibaudremy.orthocapture.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -74,5 +75,32 @@ fun PrimaryNavigationButton(text: String, onClick: () -> Unit) {
 fun SecondaryNavigationButton(text: String, onClick: () -> Unit) {
     OutlinedButton(onClick = onClick) {
         Text(text)
+    }
+}
+
+@Composable
+fun OptionGroup(
+    title: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(text = title, style = MaterialTheme.typography.titleMedium)
+        options.chunked(3).forEach { optionRow ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                optionRow.forEach { option ->
+                    if (option == selectedOption) {
+                        Button(onClick = { onOptionSelected(option) }) {
+                            Text(option)
+                        }
+                    } else {
+                        OutlinedButton(onClick = { onOptionSelected(option) }) {
+                            Text(option)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
