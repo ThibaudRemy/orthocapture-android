@@ -3,19 +3,16 @@ package com.thibaudremy.orthocapture.ui.screens
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-
-private val FakeProjects = listOf(
-    "Façade nord - atelier municipal",
-    "Relevé sol - cour intérieure",
-    "Toiture annexe - diagnostic visuel",
-)
+import com.thibaudremy.orthocapture.data.ProjectRepository
 
 @Composable
 fun ProjectListScreen(
     onCreateProject: () -> Unit,
-    onOpenProject: () -> Unit,
+    onOpenProject: (String) -> Unit,
     onOpenSettings: () -> Unit,
 ) {
+    val projects = ProjectRepository.getProjects()
+
     OrthoCaptureScreenScaffold(title = "Projets") { paddingValues ->
         ScreenBody(paddingValues) {
             ScreenIntro(
@@ -27,10 +24,10 @@ fun ProjectListScreen(
                 onClick = onCreateProject,
             )
             Text("Projets récents", style = MaterialTheme.typography.titleMedium)
-            FakeProjects.forEach { projectName ->
+            projects.forEach { project ->
                 SecondaryNavigationButton(
-                    text = projectName,
-                    onClick = onOpenProject,
+                    text = "${project.name} · ${project.photoCount} photo(s)",
+                    onClick = { onOpenProject(project.id) },
                 )
             }
             SecondaryNavigationButton(

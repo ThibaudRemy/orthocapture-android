@@ -1,9 +1,12 @@
 package com.thibaudremy.orthocapture.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.thibaudremy.orthocapture.data.ProjectRepository
 import com.thibaudremy.orthocapture.ui.screens.CaptureScreen
 import com.thibaudremy.orthocapture.ui.screens.CreateProjectScreen
 import com.thibaudremy.orthocapture.ui.screens.ExportScreen
@@ -23,7 +26,9 @@ fun OrthoCaptureNavHost() {
         composable(AppDestination.ProjectList.route) {
             ProjectListScreen(
                 onCreateProject = { navController.navigate(AppDestination.CreateProject.route) },
-                onOpenProject = { navController.navigate(AppDestination.ProjectDetail.route) },
+                onOpenProject = { projectId ->
+                    navController.navigate(AppDestination.ProjectDetail.createRoute(projectId))
+                },
                 onOpenSettings = { navController.navigate(AppDestination.Settings.route) },
             )
         }
@@ -31,14 +36,31 @@ fun OrthoCaptureNavHost() {
             CreateProjectScreen(
                 onBack = { navController.popBackStack() },
                 onProjectCreated = {
-                    navController.navigate(AppDestination.ProjectDetail.route) {
+                    navController.navigate(
+                        AppDestination.ProjectDetail.createRoute(ProjectRepository.DEFAULT_PROJECT_ID),
+                    ) {
                         popUpTo(AppDestination.ProjectList.route)
                     }
                 },
             )
         }
-        composable(AppDestination.ProjectDetail.route) {
+        composable(
+            route = AppDestination.ProjectDetail.route,
+            arguments = listOf(
+                navArgument(AppDestination.ProjectDetail.PROJECT_ID_ARGUMENT) {
+                    type = NavType.StringType
+                },
+            ),
+        ) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString(
+                AppDestination.ProjectDetail.PROJECT_ID_ARGUMENT,
+            )
+            val project = projectId
+                ?.let(ProjectRepository::getProject)
+                ?: ProjectRepository.getDefaultProject()
+
             ProjectDetailScreen(
+                project = project,
                 onBack = { navController.popBackStack() },
                 onCapture = { navController.navigate(AppDestination.Capture.route) },
                 onGallery = { navController.navigate(AppDestination.Gallery.route) },
