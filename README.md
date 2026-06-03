@@ -49,6 +49,23 @@ Ce lot ajoute un modèle de données local simple pour préparer le stockage pro
 
 Hors périmètre de ce lot : Room, DataStore, CameraX, écriture réelle de `projects.json`, upload serveur et traitement photogrammétrique.
 
+## Lot 03
+
+Ce lot ajoute une première intégration CameraX destinée à valider la capture photo locale sur Android.
+
+Éléments ajoutés :
+
+- Dépendances CameraX `camera-core`, `camera-camera2`, `camera-lifecycle` et `camera-view`.
+- Permission Android `android.permission.CAMERA`.
+- `CaptureScreen` affiche désormais un aperçu caméra CameraX via `PreviewView` intégré dans Compose avec `AndroidView`.
+- Demande de permission caméra au runtime avec message utilisateur si elle est refusée.
+- Bouton `Prendre photo` qui capture une image JPG avec `ImageCapture`.
+- Stockage provisoire des images dans le dossier applicatif externe `Pictures/orthocapture/`.
+- Nommage automatique simple des fichiers en `IMG_0001.jpg`, `IMG_0002.jpg`, etc. via `LocalPhotoStorage`.
+- Message de réussite ou d’erreur après tentative de capture.
+
+Hors périmètre de ce lot : export ZIP, upload VPS, traitement photogrammétrique, Room, DataStore, géolocalisation, détection de flou, mesure et génération d’orthophoto.
+
 ## Structure du projet
 
 ```text
@@ -56,6 +73,7 @@ Hors périmètre de ce lot : Room, DataStore, CameraX, écriture réelle de `pro
 ├── app/                         # Module Android applicatif
 │   └── src/main/java/com/thibaudremy/orthocapture/
 │       ├── MainActivity.kt
+│       ├── camera/              # Helpers CameraX et stockage photo local
 │       ├── data/                # Repository local en mémoire
 │       ├── domain/model/        # Modèles Project, PhotoItem et enums métier
 │       ├── navigation/          # Destinations et NavHost Compose
