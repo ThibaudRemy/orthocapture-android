@@ -66,6 +66,20 @@ Ce lot ajoute une première intégration CameraX destinée à valider la capture
 
 Hors périmètre de ce lot : export ZIP, upload VPS, traitement photogrammétrique, Room, DataStore, géolocalisation, détection de flou, mesure et génération d’orthophoto.
 
+## Lot 04
+
+Ce lot remplace le placeholder de galerie par l’affichage des photos réellement capturées et stockées localement.
+
+Éléments ajoutés :
+
+- `LocalPhoto` décrit simplement une photo locale avec son nom de fichier, son chemin absolu, sa date de dernière modification et sa taille.
+- `LocalPhotoStorage` lit désormais les fichiers JPG et JPEG présents dans le dossier applicatif `getExternalFilesDir(Environment.DIRECTORY_PICTURES)/orthocapture/`.
+- `GalleryScreen` affiche le nombre de photos trouvées, un message lorsque la galerie est vide et une grille de miniatures avec le nom de chaque fichier.
+- Les miniatures sont décodées avec les API Android et Compose existantes afin de ne pas ajouter de dépendance d’image supplémentaire.
+- La galerie permet ainsi de vérifier les captures CameraX nommées `IMG_0001.jpg`, `IMG_0002.jpg`, etc. sur un Galaxy S24.
+
+Hors périmètre de ce lot : export ZIP, upload serveur/VPS, suppression ou édition de photos, base de données et traitement photogrammétrique.
+
 ## Structure du projet
 
 ```text
